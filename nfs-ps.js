@@ -118,3 +118,5 @@ var NFSPS = {
         };
     }
 };
+
+module.exports.NFSPS = NFSPS;

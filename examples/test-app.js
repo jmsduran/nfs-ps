@@ -17,6 +17,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
  
+ var NFSPS = require("../nfs-ps").NFSPS;
+ 
 /**
  * Test App
  *  Sample directory: ../
