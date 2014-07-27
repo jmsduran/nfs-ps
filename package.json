@@ -1,0 +1,7 @@
+{
+  "name": "nfs-ps",
+  "version": "1.0.0",
+  "description": "A Node.js utility for crawling a local file system.",
+  "main": "nfs-ps.js",
+  "author": "James M. Duran"
+}
