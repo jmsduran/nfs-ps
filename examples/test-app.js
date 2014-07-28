@@ -27,6 +27,7 @@ var TESTAPP = (function() {
     var allFilesConfig = {
         dir: "../",
         mode: NFSPS.CrawlerMode.ALL_FILES,
+        filter: NFSPS.FilterMode.ONLY_DIR,
 
         cbstart: function() {
             console.log("=== ALL_FILES crawler mode has begun ===");
@@ -46,6 +47,7 @@ var TESTAPP = (function() {
     var byFileConfig = {
         dir: "../",
         mode: NFSPS.CrawlerMode.BY_FILE,
+        filter: ".js",
 
         cbstart: function() {
             console.log("=== BY_FILE crawler mode has begun ===");

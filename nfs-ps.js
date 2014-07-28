@@ -35,16 +35,25 @@ var NFSPS = {
      * Indicates which files/directories FileSystem crawler will return to the 
      * cbparse callback.
      * 
-     * NO_FILTER - Returns all files and directories
-     * ONLY_PDF - Returns only pdf files, no directories
      * ONLY_DIR - Returns only directories, no files
      * NO_DIR - Returns all files, no directories
      */
     FilterMode: {
-        NO_FILTER: 0,
-        ONLY_PDF: 1,
-        ONLY_DIR: 2,
-        NO_DIR: 3
+        ONLY_DIR: 0,
+        NO_DIR: 1
+    },
+    
+    /**
+     * Utility which returns the extension of a file.
+     * 
+     * file - file path string
+     */
+    FileNameExtension: function(file) {
+        return {
+            get: function() {
+                return path.extname(file);
+            }
+        };
     },
 
     /**
@@ -58,6 +67,28 @@ var NFSPS = {
      */
     FileSystemCrawler: function(config) {
         var results = [];
+        
+        var inspectDirectory = function(dfile) {
+            if (NFSPS.FilterMode.ONLY_DIR === config.filter) {
+                if (config.mode === NFSPS.CrawlerMode.BY_FILE)
+                    config.cbparse(null, dfile);
+                else
+                    results.push(dfile);
+            }
+        };
+        
+        var inspectFile = function(dfile) {
+            if (NFSPS.FilterMode.ONLY_DIR !== config.filter) {
+                var extName = NFSPS.FileNameExtension(dfile).get();
+                
+                if(config.filter === extName || config.filter === "*") {
+                    if (config.mode === NFSPS.CrawlerMode.BY_FILE)
+                        config.cbparse(null, dfile);
+                    else
+                        results.push(dfile);
+                }
+            }
+        };
 
         /**
          * Main crawler function, which is executed recursively to crawl a 
@@ -79,15 +110,14 @@ var NFSPS = {
                     fs.stat(dfile, function(err, stat) {
                         // Recursively call walk to visit the new directory.
                         if (stat !== undefined && stat.isDirectory()) {
+                            inspectDirectory(dfile);
+                            
                             return walk(dfile, function(err, res) {
                                 !--pending && finished(null, results);
                             });
                         }
 
-                        if (config.mode === NFSPS.CrawlerMode.BY_FILE)
-                            config.cbparse(null, dfile);
-                        else
-                            results.push(dfile);
+                        inspectFile(dfile);
 
                         !--pending && finished(null, results);
                     });
