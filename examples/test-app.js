@@ -1,6 +1,6 @@
 /**
  * nfs-ps.js; test-app.js
- * A Node.js utility for crawling a local file system.
+ * Node.js utilities for crawling a local file system.
  * Copyright (C) 2014 James M. Duran
  *
  * This program is free software: you can redistribute it and/or modify

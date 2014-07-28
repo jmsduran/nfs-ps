@@ -1,6 +1,6 @@
 /**
  * nfs-ps.js
- * A Node.js utility for crawling a local file system.
+ * Node.js utilities for crawling a local file system.
  * Copyright (C) 2014 James M. Duran
  *
  * This program is free software: you can redistribute it and/or modify
@@ -57,6 +57,9 @@ var NFSPS = {
     },
 
     /**
+     * A utility for crawling a local file system. Takes the following JSON
+     * argument map as a parameter:
+     * 
      * config:
      *  dir - Directory path where the crawler should start
      *  mode - Indicates how crawler will call callback (see NFSPS.CrawlerMode)
@@ -68,6 +71,12 @@ var NFSPS = {
     FileSystemCrawler: function(config) {
         var results = [];
         
+        /**
+         * Determines whether to return a directory path back to the callback
+         * based off the filter value.
+         * 
+         * dfile - directory path string
+         */
         var inspectDirectory = function(dfile) {
             if (NFSPS.FilterMode.ONLY_DIR === config.filter) {
                 if (config.mode === NFSPS.CrawlerMode.BY_FILE)
@@ -77,6 +86,12 @@ var NFSPS = {
             }
         };
         
+        /**
+         * Determines whether to return a file path back to the callback based
+         * off the filter value.
+         * 
+         * dfile - file path string
+         */
         var inspectFile = function(dfile) {
             if (NFSPS.FilterMode.ONLY_DIR !== config.filter) {
                 var extName = NFSPS.FileNameExtension(dfile).get();
